@@ -2,7 +2,7 @@
   "name": "oscar",
   "version": "1.0.0",
   "description": "Oscar website scrapper",
-  "main": "app.js",
+  "main": "start.js",
   "scripts": {
     "test": "test"
   },
