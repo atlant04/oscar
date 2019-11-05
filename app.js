@@ -4,6 +4,8 @@ const scrapper = require('./scrapper/scrapper.js')
 const { urlencoded } = require('body-parser');
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
+var port = process.env.PORT || 3000;
+
 const app = express();
 app.use(urlencoded({ extended: false }));
 
@@ -39,7 +41,7 @@ app.post('/sms', (req, res) => {
 });
 
 
-http.createServer(app).listen(3000, () => {
+http.createServer(app).listen(port, () => {
   console.log('Express server listening on port 3000');
 });
 
