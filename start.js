@@ -7,7 +7,7 @@ const MessagingResponse = require('twilio').twiml.MessagingResponse;
 const app = express();
 app.use(urlencoded({ extended: false }));
 
-app.post('/sms', (req, res) => {
+app.post('https://oscar-gt.herokuapp.com/sms', (req, res) => {
   console.log(req)
   const twiml = new MessagingResponse();
 
