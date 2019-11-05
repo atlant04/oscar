@@ -4,7 +4,7 @@
   "description": "Oscar website scrapper",
   "main": "start.js",
   "scripts": {
-    "test": "test"
+    "start": "app.js"
   },
   "author": "Maksim Tochilkin",
   "license": "MIT",
