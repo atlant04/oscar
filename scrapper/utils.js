@@ -26,7 +26,7 @@ let scrapCourses = data => {
     const attributes = findInfo(body, $)
 
     for(var i = 0; i < courses.length; i++) {
-        courses[i].attributes = createAttributes(attributes[i])
+        courses[i].attributes = createAttributes(attributes[i]) 
     }
 
     return courses
