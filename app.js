@@ -8,6 +8,7 @@ const app = express();
 app.use(urlencoded({ extended: false }));
 
 app.post('/sms', (req, res) => {
+  console.log(req)
   const twiml = new MessagingResponse();
 
   const text = req.body.Body.split(' ')
