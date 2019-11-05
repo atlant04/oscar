@@ -10,7 +10,7 @@ const app = express();
 app.use(urlencoded({ extended: false }));
 
 app.post('/sms', (req, res) => {
-  console.log(req)
+  console.log(req.body)
   const twiml = new MessagingResponse();
 
   const text = req.body.Body.split(' ')
@@ -45,9 +45,6 @@ http.createServer(app).listen(port, () => {
   console.log('Express server listening on port 3000');
 });
 
-// scrapper(options).then(courses => {
-//     console.log(courses)
-// })
 
 
 
