@@ -21,12 +21,12 @@ app.post('/sms', (req, res) => {
   res.writeHead(200, {'Content-Type': 'text/xml'});
 
   if(isNaN(parseInt(text))) {
-    console.log("not a number")
     text = text.split(' ')
     options.subject = text[0]
     options.id = text[1]
     scrapper(options)
       .then(courses => {
+        console.log(courses)
         db.insert(courses)
         message = utils.generateMessage(courses, false)
         res.end(utils.compileMessage(message))
