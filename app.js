@@ -18,7 +18,7 @@ app.post('/sms', (req, res) => {
   const text = req.body.body
   const options = {}
   if(parseInt(text) === NaN) {
-    text = text.split()
+    text = text.split(' ')
     options.subject = text[0],
     options.id = text[1]
   } else {
