@@ -28,13 +28,13 @@ app.post('/sms', (req, res) => {
     scrapper(options)
       .then(courses => {
         db.insert(courses)
-        message = utils.generateMessage(courses)
+        message = utils.generateMessage(courses, false)
         res.end(utils.compileMessage(message))
       })
       .catch(reason => {})
   } else {
     let course = db.find({crn: text.trim()}, (err, docs) => {
-      message = utils.generateMessage(docs)
+      message = utils.generateMessage(docs, true)
       res.end(utils.compileMessage(message))
     })
   }
