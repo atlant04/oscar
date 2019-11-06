@@ -17,6 +17,7 @@ app.post('/sms', (req, res) => {
 
   const text = req.body.body
   const options = {}
+  console.log(text)
   if(parseInt(text) === NaN) {
     text = text.split(' ')
     options.subject = text[0],
@@ -24,8 +25,6 @@ app.post('/sms', (req, res) => {
   } else {
     options.crn = parseInt(text)
   }
-
-  console.log(text)
 
 
   // scrapper(options)
