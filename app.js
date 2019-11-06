@@ -2,6 +2,7 @@ const http = require('http');
 const express = require('express');
 const scrapper = require('./scrapper/scrapper.js')
 const { urlencoded } = require('body-parser');
+require('dotenv').config()
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
 var port = process.env.PORT || 3000;
