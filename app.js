@@ -2,9 +2,11 @@ const http = require('http');
 const express = require('express');
 const scrapper = require('./scrapper/scrapper.js')
 const { urlencoded } = require('body-parser');
+const utils = require('./utils.js')
+const db = require('./db.js')
 
 var port = process.env.PORT || 3000;
-const db = require('./db.js')
+
 require('dotenv').config()
 
 //Initilizing global const
@@ -13,26 +15,31 @@ const app = express()
 app.use(urlencoded({ extended: false }));
 
 app.post('/sms', (req, res) => {
-  const text = req.body.body
-  const options = {}
-  console.log(text)
-  if(parseInt(text) === NaN) {
+  var text = req.body.Body
+  var options = {}
+  var message;
+  res.writeHead(200, {'Content-Type': 'text/xml'});
+
+  if(isNaN(parseInt(text))) {
+    console.log("not a number")
     text = text.split(' ')
-    options.subject = text[0],
+    options.subject = text[0]
     options.id = text[1]
+    scrapper(options)
+      .then(courses => {
+        db.insert(courses)
+        message = utils.generateMessage(courses)
+        res.end(utils.compileMessage(message))
+      })
+      .catch(reason => {})
   } else {
-    options.crn = parseInt(text)
+    let course = db.find({crn: text.trim()}, (err, docs) => {
+      message = utils.generateMessage(docs)
+      res.end(utils.compileMessage(message))
+    })
   }
 
 
-  // scrapper(options)
-  //   .then(courses => {
-    
-  //   })
-  //   .catch(reason => {
-  // })
-
-  res.writeHead(200, {'Content-Type': 'text/xml'});
 });
 
 
