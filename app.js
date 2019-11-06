@@ -26,7 +26,6 @@ app.post('/sms', (req, res) => {
     options.id = text[1]
     scrapper(options)
       .then(courses => {
-        console.log(courses)
         db.insert(courses)
         message = utils.generateMessage(courses, false)
         res.end(utils.compileMessage(message))

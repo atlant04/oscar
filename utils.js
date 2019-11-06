@@ -9,8 +9,8 @@ function compileMessage(message) {
 function generateMessage(courses, crn) {
     var message = ''
     for(course of courses) {
-        console.log(course.attributes["schedule_type"])
         if(course.attributes["schedule_type"].includes("Lecture")) {
+            console.log(course.name)
             message += '--------------------------\n'
             message += course.name + " has " + course.seats.regular + " seats remaining \n"
             if(crn) {
