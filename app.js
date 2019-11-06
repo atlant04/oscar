@@ -13,8 +13,6 @@ const app = express()
 app.use(urlencoded({ extended: false }));
 
 app.post('/sms', (req, res) => {
-  res.writeHead(200, {'Content-Type': 'text/xml'});
-
   const text = req.body.body
   const options = {}
   console.log(text)
@@ -34,9 +32,10 @@ app.post('/sms', (req, res) => {
   //   .catch(reason => {
   // })
 
+  res.writeHead(200, {'Content-Type': 'text/xml'});
 });
 
 
 http.createServer(app).listen(port, () => {
-  console.log('Express server listening on port 3000');
+  console.log(`Express server listening on port ${port}`);
 });
