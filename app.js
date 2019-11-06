@@ -2,51 +2,42 @@ const http = require('http');
 const express = require('express');
 const scrapper = require('./scrapper/scrapper.js')
 const { urlencoded } = require('body-parser');
-require('dotenv').config()
-const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
 var port = process.env.PORT || 3000;
+const db = require('./db.js')
+require('dotenv').config()
 
-const app = express();
+//Initilizing global const
+const app = express()
+
 app.use(urlencoded({ extended: false }));
 
 app.post('/sms', (req, res) => {
-  console.log("it works")
-  const twiml = new MessagingResponse();
+  res.writeHead(200, {'Content-Type': 'text/xml'});
 
-  const text = req.body.Body.split(' ')
-  const options = {
-    subject: text[0],
-    id: text[1]
+  const text = req.body.body
+  const options = {}
+  if(parseInt(text) === NaN) {
+    text = text.split()
+    options.subject = text[0],
+    options.id = text[1]
+  } else {
+    options.crn = parseInt(text)
   }
 
-  scrapper(options).then(courses => {
-    var message = ''
-    for(course of courses) {
-      if(course.attributes.schedule_type == "Lecture*") {
-        message += '--------------------------\n'
-        message += course.name + " has " + course.seats.regular + " seats remaining \n"
-      }
-    }
-    twiml.message(message);
-    console.log(message)
-    res.writeHead(200, {'Content-Type': 'text/xml'});
-    res.end(twiml.toString());
+  console.log(text)
 
-  }).catch(reason => {
-    twiml.message(reason);
-    console.log(message)
-    res.writeHead(200, {'Content-Type': 'text/xml'});
-    res.end(twiml.toString());
-  })
+
+  // scrapper(options)
+  //   .then(courses => {
+    
+  //   })
+  //   .catch(reason => {
+  // })
+
 });
 
 
 http.createServer(app).listen(port, () => {
   console.log('Express server listening on port 3000');
 });
-
-
-
-
-

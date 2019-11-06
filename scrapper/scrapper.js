@@ -2,20 +2,16 @@ const request = require('request')
 const cheerio = require('cheerio')
 const utils = require('./utils.js')
 
-const oscarUrl = "https://oscar.gatech.edu/pls/bprod/bwckctlg.p_disp_listcrse"
-
-const options = {
-    "term_in" : "202002",
-    "subj_in" : "",
-    "crse_in" : "",
-    "schd_in" : "%"
-}
-
 function getCourses(qses) {
-    options['subj_in'] = qses.subject
-    options['crse_in'] = qses.id
+    const url = "https://oscar.gatech.edu/pls/bprod/bwckctlg.p_disp_listcrse"
+    const options = {
+        "term_in" : "202002",
+        "subj_in" : qses.subject,
+        "crse_in" : qses.id,
+        "schd_in" : "%"
+    }
     let promise = new Promise((res, rej) => {
-        request({url: oscarUrl, qs: options}, (error, response) => {
+        request({url: url, qs: options}, (error, response) => {
             if(error) {
                 rej(error) 
             } else {
@@ -42,7 +38,7 @@ function getSeats(courses) {
     return promises;
 }
 
-async function getCourseData(qses) {
+async function getCombinedCoursesAndSeats(qses) {
     let courses = await getCourses(qses)
     let seats = await Promise.all(getSeats(courses))
     for(var i = 0; i < courses.length; i++) {
@@ -51,5 +47,32 @@ async function getCourseData(qses) {
     return courses
 }
 
+async function getCourseByCrn(crn) {
+    const url = "https://oscar.gatech.edu/pls/bprod/bwckschd.p_disp_detail_sched"
+    const options = {
+        "term_in" : "202002",
+        "crn_in" : crn
+    }
+    let promise = new Promise((res, rej) => {
+        request({url: url, qs: options}, (error, response) => {
+            if(error) {
+                rej(error)
+            } else {
+                res(utils.scrapInfo(response.body))
+            }
+        })
+    })
+    return promise
+}
+
+async function getCourseData(qses) {
+    var data;
+    if(qses.crn) {
+        data = await getCourseByCrn(qses.crn)
+    } else if (qses.id) {
+        data = await getCombinedCoursesAndSeats(qses)
+    }
+    return data
+}
 
 module.exports = getCourseData

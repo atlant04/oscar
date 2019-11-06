@@ -39,7 +39,8 @@ const findNames = (body, $) => {
         const url = $(el).children().attr('href')
         courses.push({
             name: name,
-            url: url
+            url: url,
+            crn: findCrn(name)
         })
     })
 
@@ -70,6 +71,12 @@ let scrapInfo = data => {
     const remaining_waitlist = $($(body).find('td.dddefault').get(5)).html()
     return {regular: remaining, waitlist: remaining_waitlist}
 }
+
+let findCrn = name => {
+    const str = name.split('-')
+    return str[1].trim()
+}
+
 
 module.exports = {
     scrapCourses: scrapCourses,
