@@ -26,7 +26,7 @@ app.post('/sms', (req, res) => {
   var text = req.body.Body
 
   const course = Oscar.lookUp(req.body.Body)
-  utils.generateMessage(course).then(message => {
+  Oscar.generateMessage(course).then(message => {
     const twiml = new MessagingResponse();
 
     console.log(message)

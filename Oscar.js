@@ -27,6 +27,14 @@ class Oscar {
         }
     }
 
+    async generateMessage(item) {
+        if(item instanceof Course) {
+            return utils.generateMessageForCourse(item)
+        } else {
+            return utils.generateMessageForSection(item);
+        }
+    }
+
     lookUpByName(name) {
         return this.courses.find(course => {
             return course.name == name

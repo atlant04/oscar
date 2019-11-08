@@ -7,7 +7,7 @@ function compileMessage(message) {
     return twiml.toString()
 }
 
-async function generateMessage(course) {
+async function generateMessageForCourse(course) {
     var message = ''
     message += course.name + "\n"
     message += course.fullName + "\n"
@@ -23,6 +23,18 @@ async function generateMessage(course) {
     return message
 }
 
+async function generateMessageForSection(section) {
+    var message = ''
+    const seats = await parse(section.crn).then()
+    message += '--------------------------\n'
+    message += "Section: " + section.name + "\n"
+    message += "Seats remaining: " + seats.seats.remaining + "\n"
+    section.data[0].forEach(element => {
+        message += element + "\n"
+     });
+    return message
+}
+
 function isCrn(crn) {
     if(!isNaN(parseInt(crn)))
         return true
@@ -33,7 +45,7 @@ function isCrn(crn) {
 
 
 module.exports = {
-    generateMessage,
-    compileMessage,
+    generateMessageForCourse,
+    generateMessageForSection,
     isCrn
 }
