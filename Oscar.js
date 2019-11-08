@@ -44,7 +44,6 @@ class Oscar {
                 }
             })
             return Promise.all(messages).then(messages => {
-                let message = ''
                 messages.forEach(m => {
                   message += m
                 })
