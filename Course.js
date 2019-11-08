@@ -4,9 +4,9 @@ class Course {
     constructor(course){
         this.name = course.name
         this.fullName = course.data[0]
-        const sections = Object.values(course.data[1]);
-        this.sections = sections.map((sectionData) => {
-            return new Section(sectionData);
+        const sections = Object.entries(course.data[1]);
+        this.sections = sections.map(([name, sectionData]) => {
+            return new Section(name, sectionData);
         })
     }
 }

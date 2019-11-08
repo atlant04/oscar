@@ -1,7 +1,8 @@
 class Section {
-    constructor(data){
-        this.name = Object.keys(data)[0]
-        this.crn = Object.values(data)[0]
+    constructor(name, data){
+        this.name = name
+        this.crn = data[0]
+        this.data = data[1]
     }
 }
 

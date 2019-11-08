@@ -16,6 +16,22 @@ class Oscar {
     }
     
     lookUpByCrn(crn) {
+        for(var i = 0; i < this.courses.length; i++) {
+            var sections = this.courses[i].sections
+            for(var j = 0; j < sections.length; j++) {
+                if(sections[j].crn == crn) {
+                    return sections[j]
+                }
+
+            }
+        }
+    }
+
+    lookUpByName(name) {
+        return this.courses.find(course => {
+            return course.name == name
+        })
+    }
        
 }
 module.exports = Oscar

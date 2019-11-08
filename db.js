@@ -37,7 +37,7 @@ const getOscar = async () => {
 }
 
 getOscar().then(oscar => {
-    console.log(oscar.lookUp("41275"))
+    console.log(oscar.lookUp("CS 2340"))
 })
 
 module.exports = {
