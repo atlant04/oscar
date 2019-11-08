@@ -14,16 +14,7 @@ let oscar
 const createOscar = () => {
     return new Promise((res, rej) => {
         getTermData("202002").then(data => {
-            const courses = data['courses']
-            const keys = Object.entries(courses);
-            const parsedCourses = []
-            for(const [key, data] of keys){
-                parsedCourses.push({
-                    name: key, 
-                    data: data
-                })
-            } 
-            res(new Oscar(parsedCourses))
+            res(new Oscar(data))
         })
     })
 }

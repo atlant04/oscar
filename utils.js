@@ -7,31 +7,23 @@ function compileMessage(message) {
     return twiml.toString()
 }
 
-async function generateMessageForCourse(course) {
+function generateMessageForCourse(course) {
     var message = ''
     message += course.name + "\n"
     message += course.fullName + "\n"
-    for(var section of course.sections) {
-        const seats = await parse(section.crn).then()
-        message += '--------------------------\n'
-        message += "Section: " + section.name + "\n"
-        message += "Seats remaining: " + seats.seats.remaining + "\n"
-        section.data[0].forEach(element => {
-            message += element + "\n"
-        });
-    }
     return message
 }
 
 async function generateMessageForSection(section) {
     var message = ''
-    const seats = await parse(section.crn).then()
+    const seats = await parse(section.crn)
     message += '--------------------------\n'
     message += "Section: " + section.name + "\n"
     message += "Seats remaining: " + seats.seats.remaining + "\n"
-    section.data[0].forEach(element => {
-        message += element + "\n"
-     });
+    message += "CRN: " + section.crn + "\n"
+    Object.values(section.meetings[0]).forEach(meeting => {
+        message += meeting + "\n"
+    })
     return message
 }
 
@@ -41,8 +33,6 @@ function isCrn(crn) {
     else 
         return false
 }
-
-
 
 module.exports = {
     generateMessageForCourse,

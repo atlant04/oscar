@@ -1,11 +1,10 @@
 const Section = require('./Section.js')
 
 class Course {
-    constructor(course){
-        this.name = course.name
-        this.fullName = course.data[0]
-        const sections = Object.entries(course.data[1]);
-        this.sections = sections.map(([name, sectionData]) => {
+    constructor(name, data){
+        this.name = name
+        this.fullName = data[0]
+        this.sections = Object.entries(data[1]).map(([name, sectionData]) => {
             return new Section(name, sectionData);
         })
     }
