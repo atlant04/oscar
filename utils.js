@@ -22,7 +22,8 @@ async function generateMessageForSection(section) {
     message += "Seats remaining: " + seats.seats.remaining + "\n"
     message += "CRN: " + section.crn + "\n"
     Object.values(section.meetings[0]).forEach(meeting => {
-        message += meeting + "\n"
+        if(!undefined)
+            message += meeting + "\n"
     })
     return message
 }
