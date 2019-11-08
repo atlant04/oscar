@@ -24,7 +24,15 @@ function generateMessage(courses, crn) {
     return message
 }
 
+function isCrn(crn) {
+    if(!isNaN(parseInt(crn)))
+        return true
+    else 
+        return false
+}
+
 module.exports = {
-    generateMessage: generateMessage,
-    compileMessage: compileMessage
+    generateMessage,
+    compileMessage,
+    isCrn
 }

@@ -1,6 +1,5 @@
 const request = require('request')
 const cheerio = require('cheerio')
-const utils = require('./utils.js')
 
 function getCourses(qses) {
     const url = "https://oscar.gatech.edu/pls/bprod/bwckctlg.p_disp_listcrse"
