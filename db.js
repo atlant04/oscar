@@ -9,38 +9,35 @@ db.loadDatabase()
 db.ensureIndex({fieldName: 'name', unique: true}, err => {}) //making courses unique by name
 users.loadDatabase()
 users.ensureIndex({fieldName: 'number', unique: true}, err => {}) 
+let oscar
 
-const loadCourseDatabase = () => {
-    getTermData("202002").then(data => {
-        const courses = data['courses']
-        const keys = Object.keys(courses);
-        for(key of keys){
-            const course = {
-                name: key, 
-                data: courses[key]
-            }
-            db.insert(course, (error, doc) => {
-                if(error) {
-                   // console.log(error)
-                }
-            })
-        }
-    })
-}
-
-const getOscar = async () => {
+const createOscar = () => {
     return new Promise((res, rej) => {
-        db.find({}, (error, docs) => {
-            res(new Oscar(docs))
+        getTermData("202002").then(data => {
+            const courses = data['courses']
+            const keys = Object.entries(courses);
+            const parsedCourses = []
+            for(const [key, data] of keys){
+                parsedCourses.push({
+                    name: key, 
+                    data: data
+                })
+            } 
+            res(new Oscar(parsedCourses))
         })
     })
 }
 
-getOscar().then(oscar => {
-    console.log(oscar.lookUp("CS 2340"))
-})
+const initOscar = async () => {
+    if(oscar) {
+        console.warn("Oscar has been initialized")
+        //return callback(null, oscar)
+    }
+    return await createOscar()
+} 
+
 
 module.exports = {
     db,
-    getOscar
+    initOscar
 };

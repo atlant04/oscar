@@ -42,7 +42,6 @@ return getHTML().then(html => {
             remaining: data[5]
         }
     }
-    console.log(seats)
     return seats
 })
 }

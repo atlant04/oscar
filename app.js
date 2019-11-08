@@ -4,47 +4,41 @@ const scrapper = require('./scrapper/scrapper.js')
 const { urlencoded } = require('body-parser');
 const utils = require('./utils.js')
 const db = require('./db.js')
+const MessagingResponse = require('twilio').twiml.MessagingResponse;
+
 var port = process.env.PORT || 3000;
 
 
 //Initilizing global const
 const app = express()
+let Oscar
 //db.loadCourseDatabase()
 
 app.use(urlencoded({ extended: false }));
 
+db.initOscar().then(oscar => {
+  Oscar = oscar
+  app.listen(port, console.log("Listening on port: " + port))
+})
+
+
 app.post('/sms', (req, res) => {
   var text = req.body.Body
-  var options = {}
-  var message;
-  res.writeHead(200, {'Content-Type': 'text/xml'});
 
-  // if(isNaN(parseInt(text))) {
-  //   text = text.split(' ')
-  //   options.subject = text[0]
-  //   options.id = text[1]
-  //   scrapper(options)
-  //     .then(courses => {
-  //       db.insert(courses)
-  //       message = utils.generateMessage(courses, false)
-  //       res.end(utils.compileMessage(message))
-  //     })
-  //     .catch(reason => {})
-  // } else {
-  //   let course = db.find({crn: text.trim()}, (err, docs) => {
-  //     message = utils.generateMessage(docs, true)
-  //     res.end(utils.compileMessage(message))
-  //   })
-  // }
+  const course = Oscar.lookUp(req.body.Body)
+  utils.generateMessage(course).then(message => {
+    const twiml = new MessagingResponse();
 
+    console.log(message)
+    twiml.message(message);
 
+    res.writeHead(200, {'Content-Type': 'text/xml'});
+    res.end(twiml.toString());
+  })
 });
 
-db.lookUpByCrn(36623)
-
-
-const options = {
-  subject: "PHYS", 
-  id: "2212"
-}
+app.get("/sms", (req, res) => {
+  console.log("jo")
+  res.end("hi")
+})
 

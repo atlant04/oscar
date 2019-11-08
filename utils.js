@@ -1,4 +1,5 @@
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
+const parse = require('./parse.js')
 
 function compileMessage(message) {
     const twiml = new MessagingResponse();
@@ -6,20 +7,18 @@ function compileMessage(message) {
     return twiml.toString()
 }
 
-function generateMessage(courses, crn) {
+async function generateMessage(course) {
     var message = ''
-    for(course of courses) {
-        if(course.attributes["schedule_type"].includes("Lecture")) {
-            console.log(course.name)
-            message += '--------------------------\n'
-            message += course.name + " has " + course.seats.regular + " seats remaining \n"
-            if(crn) {
-                message += "Time: " + course.attributes["time"] + "\n"
-                message += "Days: " + course.attributes["days"] + "\n"
-                message += "Professor: " + course.attributes["professor"] + "\n"
-                message += "Location: " + course.attributes["location"] + "\n"
-            }
-        }
+    message += course.name + "\n"
+    message += course.fullName + "\n"
+    for(var section of course.sections) {
+        const seats = await parse(section.crn).then()
+        message += '--------------------------\n'
+        message += "Section: " + section.name + "\n"
+        message += "Seats remaining: " + seats.seats.remaining + "\n"
+        section.data[0].forEach(element => {
+            message += element + "\n"
+        });
     }
     return message
 }
@@ -30,6 +29,8 @@ function isCrn(crn) {
     else 
         return false
 }
+
+
 
 module.exports = {
     generateMessage,
