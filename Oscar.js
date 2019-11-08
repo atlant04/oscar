@@ -32,6 +32,8 @@ class Oscar {
     isLecture(section) {
         if(this.scheduleTypes[section.scheduleTypeIndex] == "Lecture*") {
             return true
+        } else {
+            return false
         }
     }
 
