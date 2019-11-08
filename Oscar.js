@@ -37,7 +37,7 @@ class Oscar {
 
     async generateMessage(item) {
         if(item instanceof Course) {
-            let message = utils.generateMessageForCourse(item)
+            let message = utils.generateMessageForCourse(item) + "\n"
             let messages = item.sections.map(section => {
                 if(this.isLecture(section)) {
                     return utils.generateMessageForSection(section)
