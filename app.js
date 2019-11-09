@@ -27,11 +27,13 @@ app.post('/sms', (req, res) => {
 
   const course = Oscar.lookUp(req.body.Body)
   Oscar.generateMessage(course).then(message => {
-    const twiml = new MessagingResponse();
-    twiml.message(message);
+    if(!undefined) {
+      const twiml = new MessagingResponse();
+      twiml.message(message);
 
-    res.writeHead(200, {'Content-Type': 'text/xml'});
-    res.end(twiml.toString());
+      res.writeHead(200, {'Content-Type': 'text/xml'});
+      res.end(twiml.toString());
+    }
   })
 });
 

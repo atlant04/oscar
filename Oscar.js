@@ -39,18 +39,18 @@ class Oscar {
 
     async generateMessage(item) {
         if(item instanceof Course) {
-            let message = "-----------------------------" + utils.generateMessageForCourse(item)
-            let messages = item.sections.map(section => {
-                if(this.isLecture(section)) {
+            if(this.isLecture(section)) {
+                let message = "-----------------------------" + utils.generateMessageForCourse(item)
+                let messages = item.sections.map(section => {
                     return utils.generateMessageForSection(section)
-                }
-            })
-            return Promise.all(messages).then(messages => {
-                messages.forEach(m => {
-                  message += m
                 })
-                return message
-            })
+                return Promise.all(messages).then(messages => {
+                    messages.forEach(m => {
+                    message += m
+                    })
+                    return message
+                })
+            }
         } else {
             return utils.generateMessageForSection(item);
         }
