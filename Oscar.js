@@ -51,6 +51,7 @@ class Oscar {
                     return message
                 })
             }
+            return ""
         } else {
             return utils.generateMessageForSection(item);
         }
