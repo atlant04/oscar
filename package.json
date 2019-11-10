@@ -15,6 +15,7 @@
     "express": "^4.17.1",
     "http": "0.0.0",
     "nedb": "^1.8.0",
+    "rmp-api": "0.0.1-security",
     "twilio": "^3.37.0"
   }
 }

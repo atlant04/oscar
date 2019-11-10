@@ -25,16 +25,16 @@ db.initOscar().then(oscar => {
 app.post('/sms', (req, res) => {
   var text = req.body.Body
 
-  const course = Oscar.lookUp(req.body.Body)
-  Oscar.generateMessage(course).then(message => {
-    if(message != "") {
-      const twiml = new MessagingResponse();
-      twiml.message(message);
-
-      res.writeHead(200, {'Content-Type': 'text/xml'});
-      res.end(twiml.toString());
-    }
+  const course = Oscar.lookUp(text)
+  Oscar.getSeats(course)
+  .then(seats => Oscar.generateMessage(course, seats))
+  .then(message => {
+    const twiml = new MessagingResponse();
+    twiml.message(message);
+    res.writeHead(200, {'Content-Type': 'text/xml'});
+    res.end(twiml.toString());
   })
+  .catch(error => console.log(error))
 });
 
 app.get("/sms", (req, res) => {

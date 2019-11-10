@@ -1,9 +1,11 @@
 const Course = require("./Course.js")
 const utils = require('./utils.js')
+const parse = require('./parse.js')
+
 class Oscar {
     constructor(data) {
         const { courses, dateRanges, scheduleTypes, campuses } = data;
-        this.courses = Object.entries(courses).map(([name, data]) => new Course(name, data))
+        this.courses = Object.entries(courses).map(([name, data]) => new Course(scheduleTypes, name, data))
         this.scheduleTypes = scheduleTypes
         this.dateRanges = dateRanges
         this.campuses = campuses
@@ -37,23 +39,22 @@ class Oscar {
         }
     }
 
-    async generateMessage(item) {
+    generateMessage(item, seats) {
         if(item instanceof Course) {
-            if(this.isLecture(section)) {
-                let message = "-----------------------------" + utils.generateMessageForCourse(item)
-                let messages = item.sections.map(section => {
-                    return utils.generateMessageForSection(section)
-                })
-                return Promise.all(messages).then(messages => {
-                    messages.forEach(m => {
-                    message += m
-                    })
-                    return message
-                })
-            }
-            return ""
+            return utils.generateMessageForCourse(item, seats)
         } else {
-            return utils.generateMessageForSection(item);
+            return utils.generateMessageForSection(item, seats)
+        }
+    }
+
+    getSeats(item) {
+        if(item instanceof Course) {
+            var seatsArray = item.sections.map(section => { 
+                return parse(section.crn)
+            })
+            return Promise.all(seatsArray)
+        } else {
+            return parse(item.crn)
         }
     }
 

@@ -12,6 +12,7 @@ class Section {
         this.credits = credits
         this.scheduleTypeIndex = scheduleTypeIndex
         this.campusIndex = campusIndex
+        this.isLecture = false;
     }
 }
 

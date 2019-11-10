@@ -1,23 +1,19 @@
 const request = require('request')
 
-const parse = crn => {
-
-const url = 'https://oscar.gatech.edu/pls/bprod/bwckschd.p_disp_detail_sched?term_in=202002&crn_in=' + crn
-function getHTML() {
-    let promise = new Promise((res, rej) => {
+const parse = async crn => {
+    const url = 'https://oscar.gatech.edu/pls/bprod/bwckschd.p_disp_detail_sched?term_in=202002&crn_in=' + crn
+    return new Promise((res, rej) => {
         request({url: url}, (error, response) => {
             if(error) {
                 rej(error)
             } else {
-                res(response.body)
+                res(parseHtml(response.body))
             }
-
         })
     })
-    return promise
-}   
+}
 
-return getHTML().then(html => {
+const parseHtml = html => {
     const startIndex = html.indexOf('<caption class="captiontext">Registration Availability</caption>');
     const body = html.slice(startIndex);
     const endIndex = body.indexOf('</table>'); 
@@ -29,8 +25,7 @@ return getHTML().then(html => {
         const seat = str.slice(0, index)
         data.push(seat)
     })
-
-    const seats = {
+    return seats = {
         seats: {
             capacity: data[0],
             actual: data[1],
@@ -42,9 +37,6 @@ return getHTML().then(html => {
             remaining: data[5]
         }
     }
-    return seats
-})
 }
-
 module.exports = parse
 
