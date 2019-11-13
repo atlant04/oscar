@@ -39,23 +39,19 @@ class Oscar {
         }
     }
 
-    generateMessage(item, seats) {
+    generateMessage(item) {
         if(item instanceof Course) {
-            return utils.generateMessageForCourse(item, seats)
+            return utils.generateMessageForCourse(item)
         } else {
-            return utils.generateMessageForSection(item, seats)
+            return utils.generateMessageForSection(item)
         }
     }
 
-    getSeats(item) {
-        if(item instanceof Course) {
-            var seatsArray = item.sections.map(section => { 
-                return parse(section.crn)
-            })
-            return Promise.all(seatsArray)
-        } else {
-            return parse(item.crn)
-        }
+    update(course) {
+        var seatsArray = course.sections.map(section => { 
+            return section.updateSeating()
+        })
+        return Promise.all(seatsArray)
     }
 
     lookUpByName(name) {

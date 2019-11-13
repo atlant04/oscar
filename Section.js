@@ -1,3 +1,5 @@
+const parse = require("./parse.js")
+
 class Section {
     constructor(name, data){
         const [crn, meetings, credits, scheduleTypeIndex, campusIndex] = data;
@@ -13,6 +15,12 @@ class Section {
         this.scheduleTypeIndex = scheduleTypeIndex
         this.campusIndex = campusIndex
         this.isLecture = false;
+        this.seats = null;
+    }
+
+    updateSeating() {
+        console.log("set")
+        return parse(this.crn).then(seats => this.seats = seats)
     }
 }
 

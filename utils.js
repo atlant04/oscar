@@ -7,16 +7,17 @@ function compileMessage(message) {
     return twiml.toString()
 }
 
-function generateMessageForCourse(course, seats) {
+function generateMessageForCourse(course) {
     var message = ''
     message += course.name + "\n"
     message += course.fullName + "\n"
-    message += generateMessageForSections(course.name, course.sections, seats)
+    message += generateMessageForSections(course.name, course.sections)
     return message
 }
 
-function generateMessageForSection(section, seats) {
+function generateMessageForSection(section) {
     var message = ''
+    seats = section.seats
     message += "Section: " + section.name + "\n"
     message += "CRN: " + section.crn + "\n"
     Object.values(section.meetings[0]).forEach(meeting => {
@@ -27,13 +28,13 @@ function generateMessageForSection(section, seats) {
     return message
 }
 
-function generateMessageForSections(name, sections, seats) {
+function generateMessageForSections(name, sections) {
     var message = ''
-    sections.forEach((section, index) => {
+    sections.forEach(section => {
         if(section.isLecture) {
             message += '--------------------------\n'
             message += name + "\n"
-            message += generateMessageForSection(section, seats[index])
+            message += generateMessageForSection(section)
         }
     })
     return message
