@@ -7,6 +7,7 @@ const db = require('./db.js')
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
 var port = process.env.PORT || 3000;
+let notified = false;
 
 
 //Initilizing global const
@@ -26,19 +27,20 @@ app.post('/sms', (req, res) => {
   var text = req.body.Body
 
   const course = Oscar.lookUp(text)
-  Oscar.getSeats(course)
-  .then(seats => Oscar.generateMessage(course, seats))
-  .then(message => {
+  Oscar.update(course).then(() => {
+    const message = Oscar.generateMessage(course)
     const twiml = new MessagingResponse();
     twiml.message(message);
     res.writeHead(200, {'Content-Type': 'text/xml'});
     res.end(twiml.toString());
+    res.end(message);
   })
-  .catch(error => console.log(error))
+  
 });
 
-app.get("/sms", (req, res) => {
-  console.log("jo")
-  res.end("hi")
-})
-
+app.post("/section", (req, res) => {
+  const section = Oscar.lookUp(req.body.crn)
+  section.updateSeating().then(() => {
+    res.end(JSON.stringify(section.seats))
+  })
+}) 
