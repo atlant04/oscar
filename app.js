@@ -15,6 +15,7 @@ function notify() {
   const section = Oscar.lookUp('31061')
   section.updateSeating().then(() => {
     var seat = parseInt(section.seats.seats.remaining)
+    console.log(seat)
     if(seat > 0) {
       client.messages
       .create({body: 'Physics is open', from: '+18572565041', to: '+16176978599'})
