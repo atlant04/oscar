@@ -19,7 +19,6 @@ class Section {
     }
 
     updateSeating() {
-        console.log("set")
         return parse(this.crn).then(seats => this.seats = seats)
     }
 }
