@@ -36,7 +36,7 @@ app.use(urlencoded({ extended: false }));
 db.initOscar().then(oscar => {
   Oscar = oscar
   app.listen(port, console.log("Listening on port: " + port))
-  setInterval(notify, 2000);
+  setInterval(notify, 10000);
 })
 
 
